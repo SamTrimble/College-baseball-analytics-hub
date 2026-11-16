@@ -12,11 +12,11 @@
 .diamond-fab.hidden-fab { opacity: 0; pointer-events: none; transform: scale(.8); }
 /* Chatling (Lab 3 bot): shrunk to a small launcher in the bottom-right corner;
    Diamond AI sits just above it so the two never overlap. */
-#chtl-chat-icon-container { transform: scale(0.55) !important; transform-origin: bottom right !important; }
-#chtl-chat-icon-container:hover { transform: scale(0.62) !important; }
+#chtl-chat-icon-container { transform: scale(0.9) !important; transform-origin: bottom right !important; }
+#chtl-chat-icon-container:hover { transform: scale(0.97) !important; }
 .chtl-hovering-message-container { display: none !important; }
-body.has-chatling .diamond-fab { bottom: 72px; }
-body.has-chatling .diamond-panel { bottom: 72px; }
+body.has-chatling .diamond-fab { bottom: 96px; }
+body.has-chatling .diamond-panel { bottom: 96px; }
 @media (max-width: 600px) { body.has-chatling .diamond-fab { bottom: 64px; } }
 @keyframes dpulse { 0% { opacity: .9; transform: scale(1); } 100% { opacity: 0; transform: scale(1.25); } }
 @media (max-width: 600px) { .diamond-fab .d-fab-label { display: none; } .diamond-fab { padding: 9px; right: 16px; bottom: 16px; } }
@@ -104,7 +104,7 @@ body.has-chatling .diamond-panel { bottom: 72px; }
 
 /* "Chatling AI" label beside the small Chatling launcher (bottom-right) */
 .chatling-tag {
-  position: fixed; right: 64px; bottom: 26px; z-index: 2147483000;
+  position: fixed; right: 84px; bottom: 36px; z-index: 2147483000;
   padding: 6px 12px; border-radius: 999px; cursor: pointer; pointer-events: auto;
   background: #0b1530; color: #fff; border: 1px solid rgba(61,139,255,.55);
   font: 700 13px/1.2 system-ui, -apple-system, 'Segoe UI', sans-serif; letter-spacing: .02em;
