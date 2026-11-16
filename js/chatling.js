@@ -8,7 +8,16 @@ export function mountChatling() {
   const tag = document.createElement('div');
   tag.className = 'chatling-tag';
   tag.textContent = 'Chatling AI';
-  tag.setAttribute('aria-hidden', 'true');
+  tag.setAttribute('role', 'button');
+  tag.tabIndex = 0;
+  // Forward clicks on the label to Chatling's own launcher icon.
+  const openChatling = () => {
+    const icon = document.querySelector('#chtl-chat-icon-container');
+    if (!icon) return;
+    (icon.querySelector('button, [role="button"], div') || icon).click();
+  };
+  tag.addEventListener('click', openChatling);
+  tag.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openChatling(); } });
   document.body.append(tag);
   if (document.getElementById('chtl-script')) return; // already embedded statically in the page HTML // moves Diamond AI's button up so they don't overlap
   window.chtlConfig = { chatbotId: CHATLING.chatbotId };
