@@ -101,3 +101,13 @@ body.has-chatling .diamond-panel { bottom: 72px; }
 .d-send svg { width: 18px; height: 18px; }
 .d-send:hover { filter: brightness(1.1); }
 .d-foot { font-size: .62rem; color: #5f6f8c; text-align: center; padding: 0 12px 8px; background: rgba(4,8,15,.5); }
+
+/* "Chatling AI" label beside the small Chatling launcher (bottom-right) */
+.chatling-tag {
+  position: fixed; right: 64px; bottom: 26px; z-index: 2147483000;
+  padding: 4px 10px; border-radius: 999px; pointer-events: none;
+  background: #0b1530; color: #fff; border: 1px solid rgba(61,139,255,.55);
+  font: 600 12px/1.2 system-ui, -apple-system, 'Segoe UI', sans-serif; letter-spacing: .02em;
+  box-shadow: 0 4px 14px rgba(0,0,0,.4);
+}
+@media (max-width: 480px) { .chatling-tag { right: 58px; bottom: 24px; font-size: 11px; } }
