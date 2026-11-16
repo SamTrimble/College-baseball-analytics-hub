@@ -4,7 +4,8 @@ import { CHATLING } from './config.js';
 
 export function mountChatling() {
   if (!CHATLING.enabled || !CHATLING.chatbotId || CHATLING.chatbotId.startsWith('PASTE')) return;
-  document.body.classList.add('has-chatling'); // moves Diamond AI's button up so they don't overlap
+  document.body.classList.add('has-chatling');
+  if (document.getElementById('chtl-script')) return; // already embedded statically in the page HTML // moves Diamond AI's button up so they don't overlap
   window.chtlConfig = { chatbotId: CHATLING.chatbotId };
   const s = document.createElement('script');
   s.async = true;
