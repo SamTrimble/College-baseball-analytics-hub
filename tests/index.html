@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diamond AI test suite · College Baseball Analytics Hub</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>.t{display:grid;grid-template-columns:70px 1fr;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}.pass{color:#8ff0bd;font-weight:700}.fail{color:#ff9eab;font-weight:700}.d{font-family:var(--font-mono);font-size:.78rem;color:var(--muted);margin-top:4px;overflow-wrap:anywhere}</style>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+<main class="container section">
+  <div class="eyebrow">Quality assurance</div>
+  <h1 style="font-size:3rem">Diamond AI test suite</h1>
+  <p>Runs the real chatbot engine against the demo dataset and a sample box score. Statistics are checked against an independent recount from the raw rows. Test 8 opens every page in a hidden frame and confirms the chatbot loaded.</p>
+  <div class="card mt-2" id="out"><div class="loading"><div class="spinner"></div>Running tests…</div></div>
+  <p class="mt-2"><a href="../index.html">← Back to the site</a></p>
+</main>
+<script type="module">
+  import { datasetFromText } from '../js/core/loader.js';
+  import { chatTests } from './chatbot.tests.js';
+  const txt = async u => (await fetch(u)).text();
+  const demo = datasetFromText(await txt('../data/demo/demo_trackman.csv'), { name: 'demo', source: 'demo' });
+  const box = datasetFromText(await txt('../data/demo/sample_boxscore_batting.csv'), { name: 'sample_boxscore_batting.csv', source: 'upload' });
+  const results = [];
+  for (const t of chatTests({ demo, box })) { let r; try { r = t.run(); } catch (e) { r = { ok: false, detail: 'threw ' + e.message }; } results.push({ ...t, ...r }); }
+  // Test 8: chatbot is mounted on every page
+  const pages = ['index.html', 'team.html', 'players.html', 'evaluations.html'];
+  const found = [];
+  for (const p of pages) {
+    const f = document.createElement('iframe'); f.style.cssText = 'position:absolute;left:-9999px;width:1200px;height:800px'; f.src = '../' + p;
+    document.body.append(f);
+    const ok = await new Promise(res => { let n = 0; const iv = setInterval(() => { const d = f.contentDocument; if (d?.querySelector('.diamond-fab') && d.defaultView.DiamondAI) { clearInterval(iv); res(true); } else if (++n > 60) { clearInterval(iv); res(false); } }, 100); });
+    found.push(`${p}: ${ok ? 'chatbot present' : 'MISSING'}`); f.remove();
+  }
+  results.push({ id: 8, name: 'Chatbot is functional on every page', ok: found.every(x => x.includes('present')), detail: found.join(' · ') });
+  const pass = results.filter(r => r.ok).length;
+  document.getElementById('out').innerHTML = `<h3>${pass}/${results.length} passed</h3>` + results.map(r => `<div class="t"><span class="${r.ok ? 'pass' : 'fail'}">${r.ok ? 'PASS' : 'FAIL'}</span><div><b>#${r.id} ${r.name}</b><div class="d">${String(r.detail).replace(/</g, '&lt;')}</div></div></div>`).join('');
+</script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Player Analytics · College Baseball Analytics Hub</title>
+  <meta name="description" content="Hitter and pitcher dashboards: slash lines, plate discipline, exit velocity, arsenal, pitch locations and side-by-side comparisons.">
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/diamond.css">
+  <script src="js/lib/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js" defer></script>
+  <script type="module" src="js/pages/players.js"></script>
+</head>
+<body>
+<main>
+  <div class="container">
+    <header class="page-head">
+      <div class="eyebrow">Individual Player Analytics</div>
+      <h1>Player Dashboards</h1>
+      <p>Pick a hitter or pitcher to see their production, plate discipline, contact quality, arsenal and locations, all from the active dataset. Use the comparison tool at the bottom to put two players side by side.</p>
+    </header>
+    <div class="data-bar" id="data-bar"></div>
+
+    <div class="row mb-2">
+      <div class="tabs" role="tablist"><button data-role="hitting" class="on" role="tab">Hitters</button><button data-role="pitching" role="tab">Pitchers</button></div>
+      <span class="spacer"></span>
+      <label class="field" style="min-width:260px">Player<select id="p-select"></select></label>
+      <label class="field" style="min-width:180px">Games<select id="p-games"></select></label>
+    </div>
+
+    <div class="card mb-2" id="p-header"></div>
+    <div class="kpis mb-2" id="p-kpis"></div>
+
+    <!-- HITTER -->
+    <div id="hitter-view" class="grid g-2">
+      <div class="card span-2"><div class="card-head"><div><h3>Game-by-game hitting trend</h3><div class="sub">One point per game played</div></div><select id="h-trend"></select></div><div class="chart" id="h-ch-trend"></div></div>
+      <div class="card"><div class="card-head"><div><h3>Exit velocity distribution</h3><div class="sub" id="h-ev-sub"></div></div></div><div class="chart" id="h-ch-ev"></div></div>
+      <div class="card"><div class="card-head"><div><h3>vs LHP / RHP</h3><div class="sub">Split by pitcher handedness</div></div></div><div class="chart short" id="h-ch-hand"></div><div id="h-tbl-hand" class="mt-1"></div></div>
+      <div class="card"><div class="card-head"><div><h3>Strike-zone heatmap</h3><div class="sub">Pitches seen · catcher's view</div></div><select id="h-zone-metric"></select></div><div id="h-zone"></div></div>
+      <div class="card"><div class="card-head"><div><h3>Performance by pitch type</h3><div class="sub">Pitches seen, swing decisions and results</div></div></div><div id="h-tbl-pt"></div></div>
+    </div>
+
+    <!-- PITCHER -->
+    <div id="pitcher-view" class="grid g-2 hidden">
+      <div class="card span-2"><div class="card-head"><div><h3>Arsenal</h3><div class="sub">Per pitch type · movement in inches (IVB = induced vertical break)</div></div></div><div id="p-tbl-ars"></div></div>
+      <div class="card"><div class="card-head"><div><h3>Pitch velocity trend</h3><div class="sub">Average release speed by game</div></div></div><div class="chart" id="p-ch-velo"></div></div>
+      <div class="card"><div class="card-head"><div><h3>Pitch usage</h3><div class="sub" id="p-usage-sub"></div></div></div><div class="chart" id="p-ch-usage"></div></div>
+      <div class="card"><div class="card-head"><div><h3>Pitch locations</h3><div class="sub">Catcher's view · plate coordinates in feet</div></div><select id="p-loc-type"></select></div><div class="chart tall" id="p-ch-loc"></div></div>
+      <div class="card"><div class="card-head"><div><h3>Movement profile</h3><div class="sub">Horizontal break vs induced vertical break</div></div></div><div class="chart tall" id="p-ch-mov"></div></div>
+      <div class="card"><div class="card-head"><div><h3>Strikeout &amp; walk trend</h3><div class="sub">K% and BB% by appearance</div></div></div><div class="chart" id="p-ch-kbb"></div></div>
+      <div class="card"><div class="card-head"><div><h3>vs LHH / RHH</h3><div class="sub">Split by batter side</div></div></div><div class="chart short" id="p-ch-hand"></div><div id="p-tbl-hand" class="mt-1"></div></div>
+    </div>
+
+    <section class="card mt-3" id="compare">
+      <div class="card-head"><div><h2 class="mb-0">Player comparison</h2><div class="sub">Pick two players with the same role. ✓ marks the better value where "better" is defined.</div></div></div>
+      <div class="filters" style="margin-bottom:16px">
+        <label class="field">Role<select id="c-role"><option value="hitting">Hitters</option><option value="pitching">Pitchers</option></select></label>
+        <label class="field">Player A<select id="c-a"></select></label>
+        <label class="field">Player B<select id="c-b"></select></label>
+      </div>
+      <div class="grid g-2"><div id="c-table"></div><div><div class="chart tall" id="c-chart"></div></div></div>
+    </section>
+  </div>
+</main>
+</body>
+</html>

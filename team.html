@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Team Analytics · College Baseball Analytics Hub</title>
+  <meta name="description" content="Team offensive and pitching analytics from your own TrackMan or box-score CSV files, processed locally in the browser.">
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/diamond.css">
+  <script src="js/lib/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js" defer></script>
+  <script type="module" src="js/pages/team.js"></script>
+</head>
+<body>
+<main>
+  <div class="container">
+    <header class="page-head">
+      <div class="eyebrow">Team Analytics Dashboard</div>
+      <h1>Team Performance</h1>
+      <p>Upload game data to analyse your club's offense and pitching staff. Every metric below is calculated from the columns in your file. If a column is missing, the metric shows <b>N/A</b> rather than an estimate.</p>
+    </header>
+
+    <div class="data-bar" id="data-bar"></div>
+
+    <div class="grid g-2 mb-2">
+      <div class="card">
+        <div class="card-head"><div><h3>Upload game data</h3><div class="sub">TrackMan / pitch-by-pitch CSV or box-score lines</div></div></div>
+        <div id="upload"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>Dataset summary</h3><div class="sub">What was detected in the active file</div></div></div>
+        <div id="summary"></div>
+      </div>
+    </div>
+
+    <div class="filters" id="filters"></div>
+
+    <section class="mb-2">
+      <div class="card-head"><div><h2 class="mb-0">Offense</h2><div class="sub muted" id="off-sub"></div></div></div>
+      <div class="kpis" id="kpi-off"></div>
+    </section>
+    <section class="mb-2">
+      <div class="card-head"><div><h2 class="mb-0">Pitching</h2><div class="sub muted" id="pit-sub"></div></div></div>
+      <div class="kpis" id="kpi-pit"></div>
+    </section>
+
+    <div class="grid g-2">
+      <div class="card span-2">
+        <div class="card-head"><div><h3>Team trend across games</h3><div class="sub" id="trend-sub">Game-by-game, in date order</div></div>
+          <select id="trend-metric" aria-label="Trend metric"></select></div>
+        <div class="chart" id="ch-trend"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>Offense by player</h3><div class="sub" id="offp-sub"></div></div>
+          <select id="offp-metric" aria-label="Offense metric"></select></div>
+        <div class="chart tall" id="ch-offp"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>Pitcher comparison</h3><div class="sub" id="pitp-sub"></div></div>
+          <select id="pitp-metric" aria-label="Pitching metric"></select></div>
+        <div class="chart tall" id="ch-pitp"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>Strikeout % vs walk %</h3><div class="sub">Top-left is best for pitchers (high K%, low BB%)</div></div>
+          <div class="seg" id="kbb-role"><button data-r="pitching" class="on">Pitchers</button><button data-r="hitting">Hitters</button></div></div>
+        <div class="chart tall" id="ch-kbb"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>Exit velocity distribution</h3><div class="sub" id="ev-sub">Balls in play with tracked exit velocity</div></div>
+          <div class="seg" id="ev-side"><button data-s="off" class="on">Our hitters</button><button data-s="def">Allowed</button></div></div>
+        <div class="chart tall" id="ch-ev"></div>
+      </div>
+    </div>
+
+    <div class="card mt-2">
+      <div class="card-head"><div><h3>Game-by-game</h3><div class="sub">Runs come from tracked RunsScored values</div></div>
+        <button class="btn btn-sm btn-ghost" id="dl-games">Download CSV</button></div>
+      <div id="tbl-games"></div>
+    </div>
+    <div class="grid g-2 mt-2">
+      <div class="card"><div class="card-head"><div><h3>Hitters</h3><div class="sub">Click a column to sort</div></div></div><div id="tbl-hit"></div></div>
+      <div class="card"><div class="card-head"><div><h3>Pitchers</h3><div class="sub">Click a column to sort</div></div></div><div id="tbl-pit"></div></div>
+    </div>
+
+    <details class="card method mt-2" id="method">
+      <summary>Methodology &amp; formulas</summary>
+      <div id="method-body"></div>
+    </details>
+  </div>
+</main>
+</body>
+</html>

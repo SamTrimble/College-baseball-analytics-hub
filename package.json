@@ -1,0 +1,2 @@
+{ "name": "college-baseball-analytics-hub", "private": true, "type": "module",
+  "scripts": { "test": "node tests/run-tests.mjs" } }

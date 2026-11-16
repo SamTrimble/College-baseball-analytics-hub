@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Player Evaluation Studio · College Baseball Analytics Hub</title>
+  <meta name="description" content="Choose a template, upload and map your CSV, pick a player and generate a printable player evaluation report.">
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/diamond.css">
+  <script src="js/lib/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js" defer></script>
+  <script type="module" src="js/pages/evaluations.js"></script>
+</head>
+<body>
+<main>
+  <div class="container">
+    <header class="page-head">
+      <div class="eyebrow">Signature feature · Player Evaluation Studio</div>
+      <h1>Evaluation Studio</h1>
+      <p>Build a scouting and development report in five steps: choose a template, load and map your CSV, pick a player, generate the report, then print or export it. Every number is calculated from your data in this browser.</p>
+    </header>
+
+    <div class="data-bar" id="data-bar"></div>
+
+    <nav class="stepper" id="stepper" aria-label="Evaluation steps">
+      <button data-step="1"><span class="sn">1</span>Choose template</button>
+      <button data-step="2"><span class="sn">2</span>Data &amp; columns</button>
+      <button data-step="3"><span class="sn">3</span>Player &amp; filters</button>
+      <button data-step="4"><span class="sn">4</span>Generate</button>
+      <button data-step="5"><span class="sn">5</span>Export</button>
+    </nav>
+
+    <section class="step-panel" data-panel="1">
+      <div class="grid g-3" id="tmpl-grid"></div>
+    </section>
+
+    <section class="step-panel hidden" data-panel="2">
+      <div class="grid g-2">
+        <div class="card">
+          <div class="card-head"><div><h3>Data source</h3><div class="sub">Use the active dataset or upload a new CSV for this evaluation</div></div></div>
+          <div id="src-current" class="mb-1"></div>
+          <div id="eval-upload"></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><h3>Template requirements</h3><div class="sub" id="req-sub"></div></div></div>
+          <div id="req-list"></div>
+        </div>
+      </div>
+      <div class="card mt-2 hidden" id="map-card">
+        <div class="card-head"><div><h3>Column mapping</h3><div class="sub">Auto-detected matches are pre-filled. Change any dropdown if your column names differ.</div></div>
+          <label class="field" style="min-width:240px">File format<select id="map-kind"></select></label></div>
+        <div id="map-table"></div>
+        <div class="row mt-2"><span id="map-status" class="small"></span><span class="spacer"></span><button class="btn btn-ghost btn-sm" id="map-cancel">Cancel</button><button class="btn btn-primary" id="map-apply">Apply mapping &amp; load data</button></div>
+      </div>
+      <div class="row mt-2"><button class="btn btn-ghost" data-go="1">← Back</button><span class="spacer"></span><button class="btn btn-primary" data-go="3" id="to-3">Continue <span class="arrow">→</span></button></div>
+    </section>
+
+    <section class="step-panel hidden" data-panel="3">
+      <div class="card">
+        <div class="filters" id="pick" style="margin:0;background:none;border:0;padding:0"></div>
+        <div id="custom-opts" class="mt-2 hidden"></div>
+        <div class="alert info mt-2 small" id="pick-note"></div>
+      </div>
+      <div class="row mt-2"><button class="btn btn-ghost" data-go="2">← Back</button><span class="spacer"></span><button class="btn btn-primary btn-lg" id="generate">Generate evaluation <span class="arrow">→</span></button></div>
+    </section>
+
+    <section class="step-panel hidden" data-panel="4">
+      <div class="row mb-2 no-print" id="report-toolbar">
+        <button class="btn btn-ghost btn-sm" data-go="3">← Change player / filters</button><span class="spacer"></span>
+        <button class="btn btn-ghost btn-sm" data-go="5">Export options →</button>
+        <button class="btn btn-blue btn-sm" id="tb-print">Print / Save PDF</button>
+        <button class="btn btn-ghost btn-sm" id="tb-csv">Download stats CSV</button>
+      </div>
+      <div class="print-root" id="report-root"></div>
+    </section>
+
+    <section class="step-panel hidden" data-panel="5">
+      <div class="grid g-3">
+        <div class="card"><h3>Print</h3><p>Prints a clean, white "paper" version of the report without the site navigation or chat.</p><button class="btn btn-primary" id="ex-print">Print report</button></div>
+        <div class="card"><h3>Save as PDF</h3><p>Opens the print dialog. Choose <b>Save as PDF</b> as the destination. Your coaching notes are included.</p><button class="btn btn-blue" id="ex-pdf">Save as PDF</button></div>
+        <div class="card"><h3>Download CSV</h3><p>Exports the key statistics, team comparisons and strength/development flags as a CSV file.</p><button class="btn btn-ghost" id="ex-csv">Download CSV</button></div>
+      </div>
+      <div class="row mt-2"><button class="btn btn-ghost" data-go="4">← Back to report</button><span class="spacer"></span><button class="btn btn-ghost" data-go="1">Start a new evaluation</button></div>
+    </section>
+
+    <section class="section" id="library" style="padding-top:60px">
+      <div class="eyebrow">GitHub integration</div>
+      <h2>Analytics Model Library</h2>
+      <p style="max-width:780px">The analytics projects behind these templates. <b>Integrated</b> models run in this browser in JavaScript. <b>Demo</b> projects have a working JavaScript demo of the original. <b>Requires Backend</b> projects are Python/R models that need a server. The site never pretends to run them; it only displays their outputs when you include those columns in your CSV.</p>
+      <div class="grid g-3 mt-2" id="model-grid"></div>
+    </section>
+  </div>
+</main>
+<div class="modal hidden" id="preview-modal" role="dialog" aria-label="Example report"><div class="modal-box"><button class="btn btn-sm btn-primary modal-close" id="preview-close">Close ✕</button><div id="preview-root"></div></div></div>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>College Baseball Analytics Hub · Turning Game Data into Competitive Advantage</title>
+  <meta name="description" content="A college baseball analytics platform: upload TrackMan or box-score CSVs, explore team and player analytics, chat with Diamond AI and generate printable player evaluations.">
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/diamond.css">
+  <script src="js/lib/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js" defer></script>
+  <script type="module" src="js/pages/home.js"></script>
+</head>
+<body>
+<main>
+  <!-- ============ HERO with AI-generated video (autoplay + muted + loop + playsinline) ============ -->
+  <section class="hero" aria-label="Introduction">
+    <!-- Blurred ambient copy of the clip fills the background -->
+    <video class="hero-bg" autoplay muted loop playsinline preload="auto" poster="assets/images/hero-poster.jpg" aria-hidden="true" tabindex="-1">
+      <source src="assets/videos/hero.mp4" type="video/mp4">
+    </video>
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow">College baseball performance analytics</div>
+        <h1>College Baseball <span class="accent">Analytics</span> Hub</h1>
+        <p class="lede">Turning Game Data into Competitive Advantage.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary btn-lg" href="team.html">Launch Analytics <span class="arrow">→</span></a>
+          <a class="btn btn-ghost btn-lg" href="evaluations.html">Evaluation Studio</a>
+        </div>
+        <div class="hero-meta" id="hero-meta">
+          <div><b>—</b><span>Pitches tracked</span></div>
+          <div><b>—</b><span>Plate appearances</span></div>
+          <div><b>—</b><span>Games</span></div>
+          <div><b>40+</b><span>Calculated metrics</span></div>
+        </div>
+      </div>
+      <!-- AI-generated video: autoplay + muted + loop + playsinline. Replace assets/videos/hero.mp4 to change it. -->
+      <figure class="hero-media">
+        <video id="hero-video" autoplay muted loop playsinline preload="auto" poster="assets/images/hero-poster.jpg" aria-label="AI-generated video: a college hitter's swing tracked by the analytics hub">
+          <source src="assets/videos/hero.mp4" type="video/mp4">
+        </video>
+        <figcaption class="video-tag" id="video-tag">AI-generated video</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ FEATURES ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="eyebrow">The platform</div>
+      <h2>Three ways to read the game</h2>
+      <p style="max-width:720px">Built for coaching staffs, analysts and players. Upload a TrackMan pitch-by-pitch export or a box score, and every page, chart and chatbot answer updates from your file. Processing happens in your browser.</p>
+      <div class="grid g-3 mt-2">
+        <article class="card feature-card reveal">
+          <span class="num">01</span>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 20h18M6 16V9M11 16V5M16 16v-6M21 16v-3"/></svg></div>
+          <h3>Team Analytics</h3>
+          <p>Offense and pitching for the whole club, with filters for game, opponent, date and player.</p>
+          <ul><li>AVG / OBP / SLG / OPS, K%, BB%</li><li>Exit velo, hard-hit, chase and whiff rates</li><li>ERA or RA/9, WHIP, strike %, first-pitch strike %</li><li>Trends, distributions and game-by-game tables</li></ul>
+          <a class="btn btn-ghost btn-sm" href="team.html">Open team dashboard →</a>
+        </article>
+        <article class="card feature-card reveal">
+          <span class="num">02</span>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="7" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></div>
+          <h3>Player Analytics</h3>
+          <p>Dashboards for every hitter and pitcher, plus side-by-side comparisons.</p>
+          <ul><li>Strike-zone heatmaps and pitch locations</li><li>Arsenal, velocity by pitch, movement profile</li><li>Splits vs LHP/RHP and LHH/RHH</li><li>Two-player comparison tool</li></ul>
+          <a class="btn btn-ghost btn-sm" href="players.html">Open player dashboards →</a>
+        </article>
+        <article class="card feature-card reveal">
+          <span class="num">03</span>
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg></div>
+          <h3>Player Evaluations</h3>
+          <p>Five report templates that turn a CSV into a printable scouting and development report.</p>
+          <ul><li>Hitter, pitcher, pitch selection, pitch quality</li><li>Custom reports with your own sections</li><li>Rule-based strengths and development flags</li><li>Print, PDF and CSV export</li></ul>
+          <a class="btn btn-ghost btn-sm" href="evaluations.html">Open Evaluation Studio →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section class="section" style="background:linear-gradient(180deg,transparent,rgba(13,26,51,.55),transparent)">
+    <div class="container">
+      <div class="eyebrow">How it works</div>
+      <h2>From CSV to coaching decision</h2>
+      <div class="steps mt-3">
+        <div class="step reveal"><div class="n">1</div><h3>Upload your data</h3><p>Drag in a TrackMan or box-score CSV. Columns are detected automatically, and you can map any that differ.</p></div>
+        <div class="step reveal"><div class="n">2</div><h3>Select your analytics</h3><p>Choose team dashboards, a player view, or one of five evaluation templates.</p></div>
+        <div class="step reveal"><div class="n">3</div><h3>Generate insights</h3><p>Charts, splits and leaderboards are calculated with documented formulas. Missing data is flagged, never invented.</p></div>
+        <div class="step reveal"><div class="n">4</div><h3>Export evaluations</h3><p>Add coaching notes, then print, save as PDF or download the numbers as CSV.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ METRICS OVERVIEW ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="eyebrow">Example metrics</div>
+      <h2>Metrics that matter</h2>
+      <p style="max-width:760px">A sample of what the hub calculates. The number on each card is the <span class="chip badge-demo">DEMO</span> team value from the fictional sample dataset. Upload your own file and the same cards will show your team.</p>
+      <div class="grid g-3 mt-2" id="metric-cards"></div>
+    </div>
+  </section>
+
+  <!-- ============ DIAMOND AI ============ -->
+  <section class="section" style="padding-top:20px">
+    <div class="container">
+      <div class="card" style="padding:34px;background:linear-gradient(120deg,rgba(61,139,255,.14),rgba(10,20,40,.8) 60%)">
+        <div class="grid g-2" style="align-items:center">
+          <div>
+            <div class="eyebrow">Built-in assistant</div>
+            <h2>Ask Diamond AI</h2>
+            <p>The chatbot in the bottom-right corner of every page queries the same data as the dashboards. It finds players, ranks leaders, compares hitters or pitchers, summarises team stats, opens evaluation templates and explains metrics. Every number it gives is calculated from the loaded dataset and labelled with its source.</p>
+          </div>
+          <div class="row" style="gap:8px" id="ask-chips"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ X-FACTOR (required description, < 50 words) ============ -->
+  <section class="section" style="padding-top:10px">
+    <div class="container">
+      <div class="xfactor reveal">
+        <div class="x">X</div>
+        <div><h3 class="mb-0">Creative X-Factor: Interactive Player Evaluation Studio</h3>
+          <p id="xfactor-text">Pick a report template, upload your own TrackMan or box-score CSV, map its columns, choose a player and generate a printable scouting report. It includes charts, team comparisons and rule-based strengths, and exports to PDF or CSV. Diamond AI can launch it from any page.</p></div>
+        <a class="btn btn-primary" href="evaluations.html">Try it →</a>
+      </div>
+    </div>
+  </section>
+</main>
+</body>
+</html>
